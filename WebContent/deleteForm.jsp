@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-	int no = Integer.parseInt(request.getParameter("no"));
+	String no = request.getParameter("no");
 	System.out.println(no + "번이 선택되었습니다.");	
-
 %>
 
 <!DOCTYPE html>
@@ -15,6 +14,7 @@
 <body>
 	<form action="./delete.jsp" method="get">
 		비밀번호 <input type="password" name="password" values="">
+		<input type="hidden" name="no" value="<%=no %>">
 		<button type="submit">확인</button>
 	</form>
 	
