@@ -74,19 +74,19 @@ public class GuestbookDao {
 	}
 
 	// 삭제
-	public int delete(String password, int no) {
+	public int delete(GuestbookVo vo) {
 		int count = 0;
 		this.getConnection();
 
 		try {
 			String query = "";
 			query += "delete from guestbook ";
-			query += " where password = ?";	
-			query += " and no = ?";
+			query += " where no = ?";	
+			query += " and password = ?";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, password);
-			pstmt.setInt(2, no);
+			pstmt.setInt(1, vo.getNo());
+			pstmt.setString(2, vo.getPassword());
 			
 			count = pstmt.executeUpdate();
 			
@@ -107,7 +107,6 @@ public class GuestbookDao {
 			String query = "";
 			query += "select  no, ";
 			query += "        name, ";
-			query += "        password, ";
 			query += "        content,";
 			query += "        to_char(reg_date, 'YYYY-MM-DD HH:MI:SS') reg_date ";
 			query += " from guestbook ";
@@ -119,11 +118,15 @@ public class GuestbookDao {
 			while (rs.next() == true) {
 				int no = rs.getInt("no");
 				String name = rs.getString("name");
-				String password = rs.getString("password");
 				String content = rs.getString("content");
 				String regDate = rs.getString("reg_date");
 
-				GuestbookVo vo = new GuestbookVo(no, name, password, content, regDate);
+				GuestbookVo vo = new GuestbookVo();
+				vo.setNo(no);
+				vo.setName(name);
+				vo.setContent(content);
+				vo.setRegDate(regDate);
+				
 				gList.add(vo);
 			}
 		} catch (SQLException e) {
